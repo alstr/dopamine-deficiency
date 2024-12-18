@@ -21,7 +21,7 @@
             text-transform: uppercase;
         }
         video {
-            position: fixed;
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -202,40 +202,12 @@
 
             setInterval(applyGlitchEffect, Math.random() * 3000);
         });
-
-        // URL to your video file hosted on GitHub Pages
-        const videoUrl = "https://alstr.github.io/dopamine-deficiency/video-bg.mp4";
-      
-        // Fetch the video and convert it to a playable format
-        fetch(videoUrl)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.blob(); // Get the file as a Blob
-          })
-          .then(blob => {
-            // Create a Blob with the correct MIME type
-            const correctedBlob = new Blob([blob], { type: "video/mp4" });
-            // Create an Object URL
-            const videoObjectUrl = URL.createObjectURL(correctedBlob);
-            // Set the Object URL as the video source
-            const videoElement = document.getElementById("video");
-            videoElement.src = videoObjectUrl;
-            videoElement.play();
-
-            videoElement.onloadeddata = () => {
-                URL.revokeObjectURL(videoObjectUrl); // Free up memory
-            };
-          })
-          .catch(error => {
-            console.error("Error loading video:", error);
-          });
   </script>
 </head>
 <body>
     <div class="video-container">
         <video id="video" autoplay loop muted playsinline poster="poster.jpg">
+            <source src="video-bg.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="text-overlay">
