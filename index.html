@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dopamine Deficiency</title>
+    <style>
+        @font-face {
+            font-family: 'VCR OSD Mono';
+            src: url('VCR_OSD_MONO_1.001.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'VCR OSD Mono', monospace;
+            color: white;
+            background: black;
+            text-transform: uppercase;
+        }
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .text-overlay {
+            text-align: center;
+            mix-blend-mode: difference;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @keyframes jitter {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, 1px); }
+        }
+        .jitter-wrapper {
+            position: relative;
+            animation: jitter 0.1s infinite;
+            color: #91959d;
+            filter: blur(1px);
+            max-width: 95%;
+        }
+        .logo-container {
+            display: inline-block;
+            opacity: 0.6;
+            max-width: 800px;
+        }
+        .logo-top1, .logo-top2, .logo-bottom1, .logo-bottom2 {
+            display: block;
+            max-width: 100%;
+            filter: invert(1);
+        }
+        .section {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        .section:nth-child(odd) {
+            background-color: rgba(0, 0, 0, 0.75);
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .section:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.75);
+            color: rgba(0, 0, 0, 0.75);
+        }
+        .section:nth-child(even) a {
+            filter: invert(1);
+        }
+        .container {
+            max-width: 1200px;
+            max-height: 100%;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 50px 50px 75px 50px;
+            box-sizing: border-box;
+        }
+        a {
+            color: yellow;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 5px 10px;
+            border: 2px solid;
+            text-decoration: none;
+        }
+        table .btn {
+            margin-top: 0;
+        }
+        h1, h2 {
+            font-weight: normal;
+        }
+        h1 {
+            font-size: 4rem;
+        }
+        h2 {
+            font-size: 3rem;
+        }
+        h2 {
+            border-bottom: 4px solid;
+            margin-top: 0;
+        }
+        p {
+            font-size: 1.25rem;
+        }
+        iframe {
+            margin-top: 25px;
+        }
+        iframe + div {
+            font-size: 10px;
+            margin-top: 10px;
+            opacity: 0.75;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        tr {
+            border-bottom: 2px solid white;
+        }
+        tr:last-child {
+            border-bottom: none;
+        }
+        table td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            white-space: nowrap;
+        }
+        table td:nth-child(2) {
+            width: 100%;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        .product {
+            width: 25%;
+            text-align: center;
+        }
+        .product img {
+            background-color: white;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 4px 4px grey;
+        }
+        .product ul {
+            list-style-position: inside;
+            padding: 0;
+        }
+        .product .btn {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .container {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+            table td:nth-child(2) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .product {
+                width: 100%;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const logoTop1 = document.querySelector(".logo-top1");
+            const logoTop2 = document.querySelector(".logo-top2");
+            const logoBottom1 = document.querySelector(".logo-bottom1");
+            const logoBottom2 = document.querySelector(".logo-bottom2");
+
+            const images = [logoTop1, logoTop2, logoBottom1, logoBottom2];
+
+            function applyGlitchEffect() {
+                const randomImage = images[Math.floor(Math.random() * images.length)];
+
+                const randomTranslateX = (Math.random() * 50 - 25).toFixed(0);
+
+                randomImage.style.transform = `translateX(${randomTranslateX}px)`;
+
+                setTimeout(() => {
+                    randomImage.style.transform = "translateX(0)";
+                }, 50);
+            }
+
+            setInterval(applyGlitchEffect, Math.random() * 3000);
+        });
+
+        // URL to your video file hosted on GitHub Pages
+        const videoUrl = "video-bg.mp4";
+      
+        // Fetch the video and convert it to a playable format
+        fetch(videoUrl)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.blob(); // Get the file as a Blob
+          })
+          .then(blob => {
+            // Create a Blob with the correct MIME type
+            const correctedBlob = new Blob([blob], { type: "video/mp4" });
+            // Create an Object URL
+            const videoObjectUrl = URL.createObjectURL(correctedBlob);
+            // Set the Object URL as the video source
+            const videoElement = document.getElementById("video");
+            videoElement.src = videoObjectUrl;
+            videoElement.play();
+
+            videoElement.onloadeddata = () => {
+                URL.revokeObjectURL(videoObjectUrl); // Free up memory
+            };
+          })
+          .catch(error => {
+            console.error("Error loading video:", error);
+          });
+  </script>
+</head>
+<body>
+    <div class="video-container">
+        <video id="video" autoplay loop muted playsinline poster="poster.jpg">
+            <source src="video-bg.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="text-overlay">
+            <div class="jitter-wrapper">
+                <div class="logo-container" aria-label="Dopamine Deficiency">
+                    <img class="logo-top1" src="logo-1.png" />
+                    <img class="logo-top2" src="logo-2.png" />
+                    <img class="logo-bottom1" src="logo-3.png" />
+                    <img class="logo-bottom2" src="logo-4.png" />
+                </div>
+                <h1>Prepare for Broadcast</h1>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+            <h2>Music</h2>
+            <p>Fueled by the bittersweet blend of existential dread and questionable life choices, Dopamine Deficiency brings you the kind of angst-laden tunes that were probably considered ‘too real’ back in the early 2000s. With a sound that’s equal parts nostalgic and defiant, they remind us all that feeling miserable in a world of over-filtered happiness is, in fact, an art form. If you’re still waiting for your inner turmoil to be validated, this is the soundtrack you didn’t know you needed.</p>
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1841618043&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+            <div>This player uses cookies in accordance with the <a href="https://soundcloud.com/pages/cookies" target="_blank">SoundCloud Cookies policy</a>. SoundCloud may collect usage data for analytics purposes.</div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+            <h2>Tour</h2>
+            <h3>World Tour 2024</h3>
+            <table>
+                <tr>
+                    <td>
+                        19 Dec
+                    </td>
+                    <td>
+                        Barrow-in-Furness<br>
+                        The Meeting Place
+                    </td>
+                    <td>
+                        <a class="btn" href="https://www.the-meetingplace.com/event-details/tnt-records-6th-birday-celebration" target="_blank">Tickets</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+            <h2>Store</h2>
+            <div class="product">
+                <img src="wheelbarrow.png" />
+                <h3>Dopamine Deficiency Official Wheelbarrow</h3>
+                <ul>
+                    <li>Limited to 50,000 units</li>
+                    <li>12% rust resistant</li>
+                    <li>Impresses farmers</li>
+                </ul>
+                <div>£99.99</div>
+                <a class="btn" href="#" disabled>Coming Soon</a>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+        <h2>Contact</h2>
+            <p>At some point you may be able to contact us. For now, you can't. Oh well.</p>
+            <p>¯\_(ツ)_/¯</p>
+        </div>
+    </div>
+</body>
+</html>
