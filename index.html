@@ -20,6 +20,24 @@
             background: black;
             text-transform: uppercase;
         }
+        #loading {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spinner {
+            width: 80px;
+            animation: rotate 2s linear infinite;
+        }
         video {
             position: absolute;
             width: 100%;
@@ -59,6 +77,16 @@
             max-width: 100%;
             filter: invert(1);
         }
+        #links {
+            position: absolute;
+            left: 0;
+            bottom: 50px;
+            width: 100%;
+            text-align: center;
+        }
+        #links a {
+            padding: 5px;
+        }
         .section {
             position: relative;
             z-index: 1;
@@ -96,6 +124,11 @@
         table .btn {
             margin-top: 0;
         }
+        .sub {
+            text-align: center;
+            opacity: 0.5;
+            margin: 50px 0;
+        }
         h1, h2 {
             font-weight: normal;
         }
@@ -109,16 +142,19 @@
             border-bottom: 4px solid;
             margin-top: 0;
         }
-        p {
+        p, h3 {
             font-size: 1.25rem;
         }
         iframe {
             margin-top: 25px;
+            max-width: 400px;
+            height: 400px;
         }
         iframe + div {
             font-size: 10px;
             margin-top: 10px;
             opacity: 0.75;
+            max-width: 400px;
         }
         table {
             width: 100%;
@@ -140,8 +176,12 @@
             padding-left: 25px;
             padding-right: 25px;
         }
+        .products {
+            display: flex;
+            gap: 25px;
+        }
         .product {
-            width: 25%;
+            width: 33%;
             text-align: center;
         }
         .product img {
@@ -158,6 +198,9 @@
             pointer-events: none;
             opacity: 0.3;
         }
+        #contact p:last-child {
+            font-size: 300%;
+        }
 
         @media only screen and (max-width: 1000px) {
             h1 {
@@ -170,6 +213,9 @@
             table td:nth-child(2) {
                 padding-left: 10px;
                 padding-right: 10px;
+            }
+            .products {
+                flex-direction: column;
             }
             .product {
                 width: 100%;
@@ -185,6 +231,8 @@
 
             const images = [logoTop1, logoTop2, logoBottom1, logoBottom2];
 
+            let glitchInterval;
+
             function applyGlitchEffect() {
                 const randomImage = images[Math.floor(Math.random() * images.length)];
 
@@ -197,13 +245,41 @@
                 }, 50);
             }
 
-            setInterval(applyGlitchEffect, Math.random() * 3000);
+            function startGlitchInterval() {
+                glitchInterval = setInterval(() => {
+                    applyGlitchEffect();
+                }, Math.random() * 3000);
+            }
+
+            // Stop the glitch interval if the page is inactive
+            function stopGlitchInterval() {
+                clearInterval(glitchInterval);
+            }
+
+            // Start the glitch effect on load
+            startGlitchInterval();
+
+            // Handle visibility change events
+            document.addEventListener("visibilitychange", function() {
+                if (document.hidden) {
+                    // Stop glitching when the page is hidden
+                    stopGlitchInterval();
+                } else {
+                    // Restart glitching when the page becomes visible
+                    startGlitchInterval();
+                }
+            });
 
             document.getElementById( "video" ).style.position = "fixed";
+
+            document.getElementById( "loading" ).style.display = "none";
         });
   </script>
 </head>
 <body>
+    <div id="loading">
+        <img class="spinner" src="spinner.png" />
+    </div>
     <div class="video-container">
         <video id="video" autoplay loop muted playsinline poster="poster.jpg">
             <source src="video-bg.mp4" type="video/mp4">
@@ -220,18 +296,22 @@
                 <h1>Prepare for Broadcast</h1>
             </div>
         </div>
+        <div id="links">
+            <a href="#music">Music</a> | <a href="#shows">Shows</a> | <a href="#store">Store</a> | <a href="#contact">Contact</a>
+        </div>
     </div>
-    <div class="section">
+    <div id="music" class="section">
         <div class="container">
             <h2>Music</h2>
-            <p>Fueled by the bittersweet blend of existential dread and questionable life choices, Dopamine Deficiency brings you the kind of angst-laden tunes that were probably considered ‘too real’ back in the early 2000s. With a sound that’s equal parts nostalgic and defiant, they remind us all that feeling miserable in a world of over-filtered happiness is, in fact, an art form. If you’re still waiting for your inner turmoil to be validated, this is the soundtrack you didn’t know you needed.</p>
+            <p>Fueled by the bittersweet blend of existential dread and questionable life choices, Dopamine Deficiency brings you the kind of angst-laden tunes that time forgot but your inner teenager still swears by. With a sound that’s equal parts nostalgic and defiant, they remind us all that feeling miserable in a world of over-filtered happiness is, in fact, an art form. If you’re still waiting for your inner turmoil to be validated, this is the soundtrack you didn’t know you needed.</p>
+            <p>-DD</p>
             <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1841618043&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
             <div>This player uses cookies in accordance with the <a href="https://soundcloud.com/pages/cookies" target="_blank">SoundCloud Cookies policy</a>. SoundCloud may collect usage data for analytics purposes.</div>
         </div>
     </div>
-    <div class="section">
+    <div id="shows" class="section">
         <div class="container">
-            <h2>Tour</h2>
+            <h2>Shows</h2>
             <h3>World Tour 2024</h3>
             <table>
                 <tr>
@@ -247,25 +327,51 @@
                     </td>
                 </tr>
             </table>
+            <p class="sub">More dates coming soon!</p>
         </div>
     </div>
-    <div class="section">
+    <div id="store" class="section">
         <div class="container">
             <h2>Store</h2>
-            <div class="product">
-                <img src="wheelbarrow.png" />
-                <h3>Dopamine Deficiency Official Wheelbarrow</h3>
-                <ul>
-                    <li>Limited to 50,000 units</li>
-                    <li>12% rust resistant</li>
-                    <li>Impresses farmers</li>
-                </ul>
-                <div>£99.99</div>
-                <a class="btn" href="#" disabled>Coming Soon</a>
+            <div class="products">
+                <div class="product">
+                    <img src="wheelbarrow.png" />
+                    <h3>DD Official Wheelbarrow</h3>
+                    <ul>
+                        <li>Limited to 50,000 units</li>
+                        <li>12% rust resistant</li>
+                        <li>Impresses farmers</li>
+                    </ul>
+                    <div>£99.99</div>
+                    <a class="btn" href="#" disabled>Coming Soon</a>
+                </div>
+                <div class="product">
+                    <img src="sandwich.png" />
+                    <h3>DD Official Sandwich Maker</h3>
+                    <ul>
+                        <li>Producer of tepid mediocrity</li>
+                        <li>Do not leave unattended</li>
+                        <li>Sandwich not included</li>
+                    </ul>
+                    <div>£49.99</div>
+                    <a class="btn" href="#" disabled>Coming Soon</a>
+                </div>
+                <div class="product">
+                    <img src="extinguisher.png" />
+                    <h3>DD Official Fire Extinguisher</h3>
+                    <ul>
+                        <li>Ideal companion to sandwich maker</li>
+                        <li>Expiration date: Jan 1994</li>
+                        <li>Also extinguishes hopes and dreams</li>
+                    </ul>
+                    <div>£63.99</div>
+                    <a class="btn" href="#" disabled>Coming Soon</a>
+                </div>
             </div>
+            <p class="sub">All sales are final!</p>
         </div>
     </div>
-    <div class="section">
+    <div id="contact" class="section">
         <div class="container">
         <h2>Contact</h2>
             <p>At some point you may be able to contact us. For now, you can't. Oh well.</p>
